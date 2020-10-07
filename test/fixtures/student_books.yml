@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  student_id: 1
+  book_id: 1
+  currently_reading: false
+  total_pages: 1
+
+two:
+  student_id: 1
+  book_id: 1
+  currently_reading: false
+  total_pages: 1
