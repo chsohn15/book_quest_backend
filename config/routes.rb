@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       resources :student_books
       resources :characters
       resources :reading_tweets
+
+      post '/login', to: "auth#create"
     end 
   end
 end
