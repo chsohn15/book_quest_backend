@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  student_book_id: 1
+  submission: MyText
+  point_value: 1
+  difficulty_level: MyString
+
+two:
+  student_book_id: 1
+  submission: MyText
+  point_value: 1
+  difficulty_level: MyString

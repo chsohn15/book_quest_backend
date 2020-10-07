@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :books
       resources :student_books
       resources :characters
+      resources :reading_tweets
     end 
   end
 end

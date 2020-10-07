@@ -1,0 +1,2 @@
+class ReadingTweet < ApplicationRecord
+end
