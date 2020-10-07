@@ -4,4 +4,6 @@ class User < ApplicationRecord
 
     has_many :student_books, foreign_key: "student_id"
     has_many :books, through: :student_books
+
+    has_secure_password
 end
