@@ -6,6 +6,11 @@ class Api::V1::UsersController < ApplicationController
         render json: users, only: [:id, :first_name, :last_name, :username, :is_student]
     end
 
+    def show 
+        user = User.find_by(id: params[:id])
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student], include: [:books]
+    end
+
     def create 
         user = User.new(user_params)
         if user.valid? 
