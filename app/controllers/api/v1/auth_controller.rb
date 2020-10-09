@@ -6,8 +6,11 @@ class Api::V1::AuthController < ApplicationController
 
         if user && user.authenticate(params[:password])
             render json: {
-                username: user.username,
-                user_id: user.id,
+                id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                is_student: user.is_student,
+                username: user.username, 
                 token: encode_token({user_id: user.id})}, status: 200 
         else        
             render json: {error: "Invalid username and password"}
