@@ -9,8 +9,6 @@ class StudentBook < ApplicationRecord
             id = self.character_id
             character = Character.find(id)
             return character 
-        else   
-            return {}
         end
     end
 end

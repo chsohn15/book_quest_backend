@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
       post '/login', to: "auth#create"
       post '/current_book', to: "student_books#currently_reading"
+      post '/set_character', to: "student_books#set_character"
     end 
   end
 end

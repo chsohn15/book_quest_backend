@@ -2,12 +2,12 @@ class Api::V1::StudentBooksController < ApplicationController
     
     def index 
         student_books = StudentBook.all
-        render json: student_books, include: :student, methods: :twitter_character
+        render json: student_books, include: [:book => {include: [:characters]}], methods: :twitter_character
     end
 
     def show 
         student_book = StudentBook.find_by(id: params[:id])
-        render json: student_book
+        render json: student_book, include: [:book => {include: [:characters]}], methods: :twitter_character
     end
 
     def update 
@@ -16,6 +16,14 @@ class Api::V1::StudentBooksController < ApplicationController
         student_book.save 
 
         render json: {message: "This book has been finished"}
+    end
+
+    def set_character 
+        student_book = StudentBook.find_by(id: params[:student_book_id])
+        student_book.update(character_id: params[:character_id])
+        student_book.save
+
+        render json: student_book, include: [:book => {include: [:characters]}], methods: :twitter_character
     end
 
     def currently_reading
