@@ -27,7 +27,7 @@ class Api::V1::StudentBooksController < ApplicationController
         student_book.save
 
         book = Book.find(book_id)
-        render json: student_book, include: :book
+        render json: student_book, include: [:book => {include: [:characters]}]
     end
 
 
