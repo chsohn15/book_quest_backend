@@ -2,7 +2,7 @@ class Api::V1::StudentBooksController < ApplicationController
     
     def index 
         student_books = StudentBook.all
-        render json: student_books, include: [:book => {include: [:characters]}], methods: :twitter_character
+        render json: student_books, include: [:reading_tweets, :book => {include: [:characters]}], methods: :twitter_character
     end
 
     def show 
