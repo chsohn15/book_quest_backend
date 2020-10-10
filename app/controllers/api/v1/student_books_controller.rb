@@ -2,12 +2,12 @@ class Api::V1::StudentBooksController < ApplicationController
     
     def index 
         student_books = StudentBook.all
-        render json: student_books, include: [:reading_tweets, :book => {include: [:characters]}], methods: :twitter_character
+        render json: student_books, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
     def show 
         student_book = StudentBook.find_by(id: params[:id])
-        render json: student_book, include: [:book => {include: [:characters]}], methods: :twitter_character
+        render json: student_book, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
     def update 
@@ -23,7 +23,7 @@ class Api::V1::StudentBooksController < ApplicationController
         student_book.update(character_id: params[:character_id])
         student_book.save
 
-        render json: student_book, include: [:book => {include: [:characters]}], methods: :twitter_character
+        render json: student_book, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
     def currently_reading
@@ -35,7 +35,7 @@ class Api::V1::StudentBooksController < ApplicationController
         student_book.save
 
         book = Book.find(book_id)
-        render json: student_book, include: [:book => {include: [:characters]}]
+        render json: student_book, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
 
