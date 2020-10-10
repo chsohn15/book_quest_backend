@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
     
     def index 
         users = User.all 
-        render json: users, only: [:id, :first_name, :last_name, :username, :is_student]
+        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books]
     end
 
     def show 
