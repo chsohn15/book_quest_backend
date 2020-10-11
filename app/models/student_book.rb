@@ -20,4 +20,8 @@ class StudentBook < ApplicationRecord
         sum
     end
 
+    def most_recent_tweet 
+        self.reading_tweets.last
+    end
+
 end

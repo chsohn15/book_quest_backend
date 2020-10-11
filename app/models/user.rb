@@ -37,5 +37,21 @@ class User < ApplicationRecord
         total_points = self.student_books.sum {|student_book| student_book.total_tweet_points}
         return total_points
     end
+
+    # Array of most recent tweet in each student book
+    def last_tweet_array
+        arr = []
+        self.student_books.each do |student_book|
+            if student_book.reading_tweets.length > 0 
+                arr << student_book.most_recent_tweet 
+            end
+        end
+        return arr
+    end
+
+    def last_tweet_date
+        arr = self.last_tweet_array.sort { |a,b| a.created_at <=> b.created_at }
+        return arr.last.created_at
+    end
 end
 
