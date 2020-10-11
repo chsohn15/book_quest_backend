@@ -32,4 +32,10 @@ class User < ApplicationRecord
         end
         return final_bookshelf
     end
+
+    def total_points 
+        total_points = self.student_books.sum {|student_book| student_book.total_tweet_points}
+        return total_points
+    end
 end
+

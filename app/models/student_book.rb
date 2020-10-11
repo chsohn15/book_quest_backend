@@ -5,6 +5,7 @@ class StudentBook < ApplicationRecord
     has_many :reading_tweets
 
     def twitter_character 
+        # If character exists, set as 'twitter character'
         if self.character_id 
             id = self.character_id
             character = Character.find(id)
@@ -12,6 +13,11 @@ class StudentBook < ApplicationRecord
         end
     end
 
-
+    def total_tweet_points 
+        sum = self.reading_tweets.sum do |tweet| 
+            tweet.point_value 
+        end
+        sum
+    end
 
 end
