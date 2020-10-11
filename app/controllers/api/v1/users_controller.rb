@@ -8,7 +8,7 @@ class Api::V1::UsersController < ApplicationController
 
     def show 
         user = User.find_by(id: params[:id])
-        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books, :student_books], methods: :current_book
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books, :student_books], methods: [:current_book, :bookshelf]
     end
 
     def create 

@@ -22,4 +22,14 @@ class User < ApplicationRecord
         end
         found_book
     end
+
+    def bookshelf 
+        bookshelf = self.student_books.select do |book|
+            book.currently_reading == false 
+        end
+        final_bookshelf = bookshelf.map do |student_book|
+            student_book.book
+        end
+        return final_bookshelf
+    end
 end
