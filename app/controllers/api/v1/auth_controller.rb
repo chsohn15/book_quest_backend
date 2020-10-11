@@ -12,6 +12,7 @@ class Api::V1::AuthController < ApplicationController
                 is_student: user.is_student,
                 username: user.username, 
                 total_points: user.total_points,
+                streak: user.streak,
                 token: encode_token({user_id: user.id})}, status: 200 
         else        
             render json: {error: "Invalid username and password"}
