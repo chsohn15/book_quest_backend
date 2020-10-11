@@ -11,4 +11,7 @@ class StudentBook < ApplicationRecord
             return character 
         end
     end
+
+
+
 end

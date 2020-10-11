@@ -38,5 +38,12 @@ class Api::V1::StudentBooksController < ApplicationController
         render json: student_book, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
+    def load_current_book
+        user = User.find_by(id: params[:user_id])
+        student_book = StudentBook.find_by(id: user.current_book.id)
+        render json: student_book, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
+        #byebug
+    end
+
 
 end

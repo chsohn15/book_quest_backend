@@ -15,4 +15,11 @@ class User < ApplicationRecord
             return true
         end
     end
+
+    def current_book
+        found_book = self.student_books.find do |book|
+            book.currently_reading == true 
+        end
+        found_book
+    end
 end

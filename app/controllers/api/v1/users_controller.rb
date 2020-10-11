@@ -3,12 +3,12 @@ class Api::V1::UsersController < ApplicationController
     
     def index 
         users = User.all 
-        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books]
+        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books, :student_books], methods: :current_book
     end
 
     def show 
         user = User.find_by(id: params[:id])
-        render json: user, only: [:id, :first_name, :last_name, :username, :is_student], include: [:books]
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books, :student_books], methods: :current_book
     end
 
     def create 
@@ -26,6 +26,7 @@ class Api::V1::UsersController < ApplicationController
             render json: {error: "Failed to create user"}, status: :not_acceptable 
         end 
     end
+
 
     private 
 

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post '/current_book', to: "student_books#currently_reading"
       post '/set_character', to: "student_books#set_character"
       post '/add_tweet', to: "reading_tweets#add_tweet"
+      post '/load_current_book', to: "student_books#load_current_book"
     end 
   end
 end
