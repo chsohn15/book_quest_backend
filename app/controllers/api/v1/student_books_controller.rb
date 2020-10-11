@@ -42,8 +42,12 @@ class Api::V1::StudentBooksController < ApplicationController
         user = User.find_by(id: params[:user_id])
         student_book = StudentBook.find_by(id: user.current_book.id)
         render json: student_book, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
-        #byebug
     end
 
-
+    def remove_from_shelf
+        sb = StudentBook.find_by(student_id: params[:student_id], book_id: params[:book_id])
+        sb.destroy
+        
+        render json: {message: "This book has been removed from your shelf!"}
+    end
 end

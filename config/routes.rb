@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post '/set_character', to: "student_books#set_character"
       post '/add_tweet', to: "reading_tweets#add_tweet"
       post '/load_current_book', to: "student_books#load_current_book"
+      post '/remove_from_shelf', to: "student_books#remove_from_shelf"
     end 
   end
 end
