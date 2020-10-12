@@ -27,6 +27,15 @@ class Api::V1::UsersController < ApplicationController
         end 
     end
 
+    def change_character
+        user = User.find_by(id: params[:id])
+        byebug
+        user.character_id = nil
+        user.twitter_character = nil
+        user.save 
+
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf]
+    end
 
     private 
 

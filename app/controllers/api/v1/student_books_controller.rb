@@ -50,4 +50,14 @@ class Api::V1::StudentBooksController < ApplicationController
         
         render json: {message: "This book has been removed from your shelf!"}
     end
+
+    def change_character
+        sb = StudentBook.find_by(id: params[:id])
+
+        sb.character_id = nil
+        sb.save
+
+        render json: sb, include: [:reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
+    end
+
 end
