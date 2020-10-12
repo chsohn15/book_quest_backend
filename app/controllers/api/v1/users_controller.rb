@@ -39,18 +39,18 @@ class Api::V1::UsersController < ApplicationController
 
     def handle_streak 
         user = User.find_by(id: params[:id])
-        
-        date = user.last_tweet_date.to_date
 
-        if date == Date.yesterday
-            byebug
-            user.streak += 1
-        elsif user.last_tweet_date.today? 
-            byebug
-            user.streak = user.streak
+        if user.last_tweet_array.length == 0
+            user.streak = 1 
         else 
-            byebug
-            user.streak = 0 
+            date = user.last_tweet_date.to_date
+            if date == Date.yesterday
+                user.streak += 1
+            elsif user.last_tweet_date.today? 
+                user.streak = user.streak
+             else 
+                user.streak = 0 
+            end
         end
         user.save
         render json: user, only: [:streak]
