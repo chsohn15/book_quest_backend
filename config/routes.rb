@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       post '/remove_from_shelf', to: "student_books#remove_from_shelf"
       post '/change_character', to: "student_books#change_character"
       post '/handle_streak', to: "users#handle_streak"
+      post '/get_tweet_data', to: "users#get_tweet_data"
     end 
   end
 end

@@ -62,6 +62,14 @@ class Api::V1::UsersController < ApplicationController
         render json: user, only: [:streak]
     end
 
+    def get_tweet_data
+        user = User.find_by(id: params[:id])
+
+        tweet_data = user.tweet_hash
+
+        render json: tweet_data
+    end
+
     private 
 
     def user_params 
