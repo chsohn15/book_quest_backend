@@ -29,5 +29,4 @@ class StudentBook < ApplicationRecord
     end
 
 
-
 end
