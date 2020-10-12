@@ -79,10 +79,13 @@ class User < ApplicationRecord
         # If it doesn't exist yet, then add it to the array
         self.all_tweets.each do |tweet|
             if arr.length == 0
-                arr << {date: tweet.created_at.to_date}
+                arr << {date: tweet.created_at.to_date, tweet_count: 1}
             elsif arr.length > 0 
-                if !arr.include?({"date": Time.at(tweet.created_at).to_date})
-                        arr << {date: tweet.created_at.to_date}
+                if arr.any?{|tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date} == false
+                        arr << {date: tweet.created_at.to_date, tweet_count: 1} 
+                else 
+                    found_hash = arr.find{ |tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date}
+                    found_hash[:tweet_count] += 1
                 end
             end
         end
