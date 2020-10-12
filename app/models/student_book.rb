@@ -24,4 +24,10 @@ class StudentBook < ApplicationRecord
         self.reading_tweets.last
     end
 
+    def second_most_recent_tweet
+        self.reading_tweets[-2]
+    end
+
+
+
 end

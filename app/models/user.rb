@@ -44,11 +44,13 @@ class User < ApplicationRecord
         self.student_books.each do |student_book|
             if student_book.reading_tweets.length > 0 
                 arr << student_book.most_recent_tweet 
+                arr << student_book.second_most_recent_tweet
             end
         end
         return arr
     end
 
+    # Get date of last tweet
     def last_tweet_date
         arr = self.last_tweet_array.sort { |a,b| a.created_at <=> b.created_at }
         return arr[-2].created_at
