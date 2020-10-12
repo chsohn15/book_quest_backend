@@ -29,12 +29,31 @@ class Api::V1::UsersController < ApplicationController
 
     def change_character
         user = User.find_by(id: params[:id])
-        byebug
+
         user.character_id = nil
         user.twitter_character = nil
         user.save 
 
         render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf]
+    end
+
+    def handle_streak 
+        user = User.find_by(id: params[:id])
+        
+        date = user.last_tweet_date.to_date
+
+        if date == Date.yesterday
+            byebug
+            user.streak += 1
+        elsif user.last_tweet_date.today? 
+            byebug
+            user.streak = user.streak
+        else 
+            byebug
+            user.streak = 0 
+        end
+        user.save
+        render json: user, only: [:streak]
     end
 
     private 

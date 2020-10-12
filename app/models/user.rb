@@ -51,7 +51,7 @@ class User < ApplicationRecord
 
     def last_tweet_date
         arr = self.last_tweet_array.sort { |a,b| a.created_at <=> b.created_at }
-        return arr.last.created_at
+        return arr[-2].created_at
     end
 end
 

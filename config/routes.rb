@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       post '/load_current_book', to: "student_books#load_current_book"
       post '/remove_from_shelf', to: "student_books#remove_from_shelf"
       post '/change_character', to: "student_books#change_character"
+      post '/handle_streak', to: "users#handle_streak"
     end 
   end
 end
