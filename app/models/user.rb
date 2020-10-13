@@ -71,29 +71,60 @@ class User < ApplicationRecord
     end
 
     # array of tweet dates, no duplicates
-    def tweet_hash
-        arr = []
-        # Iterate through user tweet objects, i.e. 'all_tweets'
-        # If there are no tweets, add the tweet date creation to array
-        # If the array already contains data, check to see if tweet's created_at time already exists in array
-        # If it doesn't exist yet, then add it to the array
-        # If it already exists, add 1 to the tweet count
+    # def tweet_hash
+    #     arr = []
+    #     # Iterate through user tweet objects, i.e. 'all_tweets'
+    #     # If there are no tweets, add the tweet date creation to array
+    #     # If the array already contains data, check to see if tweet's created_at time already exists in array
+    #     # If it doesn't exist yet, then add it to the array
+    #     # If it already exists, add 1 to the tweet count
         
-        self.all_tweets.each do |tweet|
-            if arr.length == 0
-                arr << {date: tweet.created_at.to_date, tweet_count: 1}
-            elsif arr.length > 0 
-                if arr.any?{|tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date} == false
-                        arr << {date: tweet.created_at.to_date, tweet_count: 1} 
-                else 
-                    found_hash = arr.find{ |tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date}
-                    found_hash[:tweet_count] += 1
-                end
+    #     self.all_tweets.each do |tweet|
+    #         if arr.length == 0
+    #             arr << {date: tweet.created_at.to_date, tweet_count: 1}
+    #         elsif arr.length > 0 
+    #             if arr.any?{|tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date} == false
+    #                     arr << {date: tweet.created_at.to_date, tweet_count: 1} 
+    #             else 
+    #                 found_hash = arr.find{ |tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date}
+    #                 found_hash[:tweet_count] += 1
+    #             end
+    #         end
+    #     end
+    #     return arr
+    # end
+
+    def first_tweet_date 
+        arr = []
+        self.student_books.each do |student_book|
+            if student_book.reading_tweets.length > 0 
+                arr << student_book.first_tweet
             end
+        end
+        arr = self.last_tweet_array.sort { |a,b| a.created_at <=> b.created_at }
+        return Time.at(arr[0].created_at).to_date
+    end
+
+    def tweet_dates_array
+        arr = (self.first_tweet_date..Date.today.to_date).map do |date|
+            {date: date, tweet_count: 0}
         end
         return arr
     end
 
+    def tweet_hash
+        # self.tweet_dates_array = [{:date=>Sat, 10 Oct 2020, :tweet_count=>0}, {:date=>Sun, 11 Oct 2020, :tweet_count=>0}]
+        # self.all_tweets = array of tweet objects
+        final_array = self.tweet_dates_array
+
+        # Iterate through all tweets 
+        # If found in tweet dates array, increment tweet_count by one
+        self.all_tweets.each do |tweet|
+            found_hash = final_array.find{ |tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date}
+            found_hash[:tweet_count] += 1
+        end
+        return final_array 
+    end
 
 end
 

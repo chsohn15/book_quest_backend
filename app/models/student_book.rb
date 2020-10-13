@@ -29,5 +29,9 @@ class StudentBook < ApplicationRecord
         self.reading_tweets[-2]
     end
 
+    def first_tweet
+        self.reading_tweets.first
+    end
+
 
 end
