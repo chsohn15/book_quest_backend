@@ -8,6 +8,9 @@ class Api::V1::UsersController < ApplicationController
 
     def show 
         user = User.find_by(id: params[:id])
+
+        user.streak = self.load_streak(user.id)
+
         render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf]
     end
 
@@ -60,6 +63,36 @@ class Api::V1::UsersController < ApplicationController
         
         user.save
         render json: user, only: [:streak]
+    end
+
+    # loadStreak method 
+    def load_streak(id)
+        user = User.find(id)
+
+        tweet_hash_array = user.tweet_hash
+        if user.all_tweets.length > 0 
+            # If tweet hash encompasses more than two days, find if there were any tweets yesterday
+            if tweet_hash_array.length > 0 && tweet_hash_array.any?{ |tweet_hash| tweet_hash[:date] == Date.yesterday}
+                yesterday_hash = tweet_hash_array.find{ |tweet_hash| tweet_hash[:date] == Date.yesterday}
+                today_hash = tweet_hash_array.find{ |tweet_hash| tweet_hash[:date] == Date.today}
+                if yesterday_hash[:tweet_count] == 0 
+                    user.streak = 0 
+                    if today_hash[:tweet_count] > 0
+                        user.streak += 1 
+                    end 
+                end 
+            elsif tweet_hash_array.length > 0 && !tweet_hash_array.any?{ |tweet_hash| tweet_hash[:date] == Date.yesterday}
+                user.streak = 0 
+                    if tweet_hash_array.any?{ |tweet_hash| tweet_hash[:date] == Date.today && tweet_hash[tweet_count] > 0}
+                        user.streak += 1 
+                    end 
+            elsif tweet_hash_array.length == 0
+                user.streak = 0 
+            end 
+        end
+        calc_streak = user.streak
+        return calc_streak
+            
     end
 
     def get_tweet_data
