@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :student_books
       resources :characters
       resources :reading_tweets
+      resources :vocab_activities
 
       post '/login', to: "auth#create"
       post '/current_book', to: "student_books#currently_reading"

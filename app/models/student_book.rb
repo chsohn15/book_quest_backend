@@ -3,6 +3,7 @@ class StudentBook < ApplicationRecord
     belongs_to :book
     belongs_to :character, optional: true
     has_many :reading_tweets
+    has_many :vocab_activities
 
     def twitter_character 
         # If character exists, set as 'twitter character'
