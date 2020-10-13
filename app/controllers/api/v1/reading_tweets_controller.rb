@@ -15,6 +15,13 @@ class Api::V1::ReadingTweetsController < ApplicationController
 
     end
 
+    def destroy 
+        reading_tweet = ReadingTweet.find_by(id: params[:id])
+        reading_tweet.destroy 
+
+        render json: {message: "You've deleted this tweet!"}
+    end
+
     private 
 
     def tweet_params 

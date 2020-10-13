@@ -77,6 +77,8 @@ class User < ApplicationRecord
         # If there are no tweets, add the tweet date creation to array
         # If the array already contains data, check to see if tweet's created_at time already exists in array
         # If it doesn't exist yet, then add it to the array
+        # If it already exists, add 1 to the tweet count
+        
         self.all_tweets.each do |tweet|
             if arr.length == 0
                 arr << {date: tweet.created_at.to_date, tweet_count: 1}
