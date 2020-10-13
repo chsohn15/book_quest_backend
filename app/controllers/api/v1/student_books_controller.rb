@@ -2,12 +2,12 @@ class Api::V1::StudentBooksController < ApplicationController
     
     def index 
         student_books = StudentBook.all
-        render json: student_books, include: [:vocab_activities, :reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
+        render json: student_books, include: [:vocab_activities => {include: [:student_book => {only: [:id], include: [:book => {only: [:id, :title]}]}]}, :reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
     def show 
         student_book = StudentBook.find_by(id: params[:id])
-        render json: student_book, include: [:vocab_activities, :reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
+        render json: student_book, include: [:vocab_activities => {include: [:student_book => {only: [:id], include: [:book => {only: [:id, :title]}]}]}, :reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
     def update 
