@@ -90,9 +90,20 @@ class Api::V1::UsersController < ApplicationController
         no_tweets_date = user.tweet_hash.reverse.find do |tweet_hash|
             tweet_hash[:tweet_count] == 0 && tweet_hash[:date] != Date.today
         end
-
-        if no_tweets_date[:date] != Date.today
-            # Find the number of dates from the last tweet date
+        
+        # If there were no tweets yesterday, set streak to 0
+        if no_tweets_date[:date] == Date.yesterday
+            user.streak = 0 
+        #If there were no tweets yesterday, and one today, user streak is 1
+        #maybe make another start another if conditional here
+        elsif no_tweets_date[:date] == Date.yesterday && user.tweet_hash.last[:tweet_count] == 1
+            user.streak = 1
+        # If today's count is 0, calculate streak from yesterday
+        elsif user.tweet_hash.last[:tweet_count] == 0 
+            temp_streak = Date.yesterday - no_tweets_date[:date]
+            user.streak = temp_streak.to_s[0].to_i 
+        else
+            # Else calculate streak from today
             temp_streak = Date.today - no_tweets_date[:date]
             user.streak = temp_streak.to_s[0].to_i 
         end
