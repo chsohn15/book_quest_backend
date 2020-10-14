@@ -49,6 +49,7 @@ class Api::V1::UsersController < ApplicationController
             if tweet_hash[:created_at].to_date == Date.yesterday 
                 hash_count[:yesterday] += 1 
             elsif tweet_hash[:created_at].to_date == Date.today 
+                #byebug
                 hash_count[:today] += 1 
             end 
         end
@@ -58,6 +59,7 @@ class Api::V1::UsersController < ApplicationController
                 #byebug
                 user.streak = 0 
                 if hash_count[:today] >= 1
+                    #byebug
                     user.streak = 1 
                 end 
             elsif hash_count[:yesterday] > 0 && hash_count[:today] == 1
@@ -81,9 +83,6 @@ class Api::V1::UsersController < ApplicationController
         render json: tweet_data
     end
 
-    def get_vocab 
-
-    end
 
     private 
 

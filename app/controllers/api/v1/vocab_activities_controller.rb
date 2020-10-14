@@ -7,13 +7,14 @@ class Api::V1::VocabActivitiesController < ApplicationController
 
     def create 
         vocab_activity = VocabActivity.create(vocab_params_1)
-
-        render json: vocab_activity, include: [:student_book => {only: [:id], include: [:book => {only: [:id, :title]}]}]
+        user = User.find_by(id: params[:user_id])
+        all_vocab = user.all_vocab
+        render json: all_vocab
     end
 
     private 
 
     def vocab_params_1
-        params.permit(:student_book_id, :word, :definition, :original_sentence)
+        params.permit(:student_book_id, :word, :definition, :original_sentence, :sentence_from_book)
     end
 end

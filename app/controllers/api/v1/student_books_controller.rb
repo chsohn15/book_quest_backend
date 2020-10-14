@@ -41,6 +41,7 @@ class Api::V1::StudentBooksController < ApplicationController
     def load_current_book
         user = User.find_by(id: params[:user_id])
         student_book = StudentBook.find_by(id: user.current_book.id)
+        # reading_tweets = student_book.reading_tweets.order('created_at DESC')
         render json: student_book, include: [:vocab_activities, :reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
