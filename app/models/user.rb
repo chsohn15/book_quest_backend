@@ -108,7 +108,10 @@ class User < ApplicationRecord
         self.student_books.each do |student_book|
             if student_book.vocab_activities.length > 0 
                 student_book.vocab_activities.each do |vocab_activity|
-                    arr << vocab_activity
+                    hash = {}
+                    hash[:vocab] = vocab_activity
+                    hash[:book_title] = vocab_activity.student_book.book.title
+                    arr << hash
                 end
             end
         end
