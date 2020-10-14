@@ -98,20 +98,44 @@ class Api::V1::UsersController < ApplicationController
     def load_streak(id)
         user = User.find(id)
 
-        tweet_hash_array = user.all_tweets
+        hash_count = {today: 0, yesterday: 0}
+
+       user.all_tweets.each do |tweet_hash| 
+            if tweet_hash[:created_at].to_date == Date.yesterday 
+                hash_count[:yesterday] += 1 
+            elsif tweet_hash[:created_at].to_date == Date.today 
+                hash_count[:today] += 1 
+            end 
+        end
 
         if user.all_tweets.length > 0 
-            if !tweet_hash_array.any?{ |tweet_hash| tweet_hash[:created_at].to_date == Date.yesterday} 
+            if hash_count[:yesterday] == 0 
+                #byebug
                 user.streak = 0 
-                if tweet_hash_array.any?{ |tweet_hash| tweet_hash[:created_at].to_date == Date.today}
-                user.streak = 1 
-                end
-            end
-        elsif tweet_hash_array.length == 0
+                if hash_count[:today] >= 1
+                    user.streak = 1 
+                end 
+            elsif hash_count[:yesterday] > 0 && hash_count[:today] == 1
+                #byebug
+                user.streak += 1 
+            end 
+        elsif user.all_tweets.length ==0 
             user.streak = 0 
-        end 
+        end
+
         calc_streak = user.streak
         return calc_streak
+
+        #     if !tweet_hash_array.any?{ |tweet_hash| tweet_hash[:created_at].to_date == Date.yesterday} 
+        #         user.streak = 0 
+        #         if tweet_hash_array.any?{ |tweet_hash| tweet_hash[:created_at].to_date == Date.today}
+        #         user.streak += 1 
+        #         end
+        #     end
+        # elsif tweet_hash_array.length == 0
+        #     user.streak = 0 
+        # end 
+
     end
 
 
