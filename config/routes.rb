@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       post '/handle_streak', to: "users#handle_streak"
       post '/get_tweet_data', to: "users#get_tweet_data"
       post '/get_vocab', to: "users#get_vocab"
+      post '/get_all_tweets', to: "users#get_all_tweets"
     end 
   end
 end

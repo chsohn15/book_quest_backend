@@ -110,7 +110,7 @@ class Api::V1::UsersController < ApplicationController
 
     end
 
-
+    # Fetch tweet data for graph
     def get_tweet_data
         user = User.find_by(id: params[:id])
         tweet_data = user.tweet_hash
@@ -118,6 +118,13 @@ class Api::V1::UsersController < ApplicationController
         render json: tweet_data
     end
 
+    # Fetch all of the user's tweets for all tweets page
+    def get_all_tweets 
+        user = User.find_by(id: params[:id])
+        all_tweets = user.all_tweets
+
+        render json: all_tweets, include: [:character, :student_book => {include: [:book => {only: [:title]}]}]
+    end
 
     private 
 
