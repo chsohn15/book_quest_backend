@@ -83,6 +83,7 @@ class Api::V1::UsersController < ApplicationController
     def load_streak(id)
         user = User.find(id)
 
+        
         tweet_hash_array = user.tweet_hash
 
         # If all counts are greater than 0, then streak = length of array 
