@@ -81,7 +81,10 @@ class User < ApplicationRecord
                 arr << student_book.first_tweet
             end
         end
-        arr = self.last_tweet_array.sort { |a,b| a.created_at <=> b.created_at }
+
+        # arr = self.last_tweet_array.sort { |a,b| a.created_at <=> b.created_at }
+        arr = arr.sort_by{|tweet_hash| tweet_hash.created_at } 
+        # FIX HERE
         return Time.at(arr[0].created_at).to_date
     end
 
@@ -95,15 +98,20 @@ class User < ApplicationRecord
     def tweet_hash
         # self.tweet_dates_array = [{:date=>Sat, 10 Oct 2020, :tweet_count=>0}, {:date=>Sun, 11 Oct 2020, :tweet_count=>0}]
         # self.all_tweets = array of tweet objects
-        final_array = self.tweet_dates_array
+        
 
         # Iterate through all tweets 
         # If found in tweet dates array, increment tweet_count by one
-        self.all_tweets.each do |tweet|
-            found_hash = final_array.find{ |tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date}
-            found_hash[:tweet_count] += 1
-        end
+        if self.all_tweets.length == 0 
+            return []
+        else
+        final_array = self.tweet_dates_array
+            self.all_tweets.each do |tweet|
+                found_hash = final_array.find{ |tweet_hash| tweet_hash[:date] == Time.at(tweet.created_at).to_date}
+                found_hash[:tweet_count] += 1
+            end
         return final_array 
+        end
     end
 
     # Array of most recent vocab entries
@@ -142,15 +150,19 @@ class User < ApplicationRecord
     def vocab_hash
         # self.tweet_dates_array = [{:date=>Sat, 10 Oct 2020, :tweet_count=>0}, {:date=>Sun, 11 Oct 2020, :tweet_count=>0}]
         # self.all_tweets = array of tweet objects
-        final_array = self.vocab_dates_array
 
         # Iterate through all vocab 
         # If found in vocab dates array, increment vocab_count by one
-        self.vocab_activities.each do |vocab|
-            found_hash = final_array.find{ |vocab_hash| vocab_hash[:date] == Time.at(vocab.created_at).to_date}
-            found_hash[:vocab_count] += 1
+        if self.vocab_activities.length == 0
+            return []
+        else
+            final_array = self.vocab_dates_array
+            self.vocab_activities.each do |vocab|
+                found_hash = final_array.find{ |vocab_hash| vocab_hash[:date] == Time.at(vocab.created_at).to_date}
+                found_hash[:vocab_count] += 1
+            end
+            return final_array 
         end
-        return final_array 
     end
 
     # Array of user's vocab activities

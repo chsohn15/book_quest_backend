@@ -83,33 +83,45 @@ class Api::V1::UsersController < ApplicationController
     def load_streak(id)
         user = User.find(id)
 
+        #user.tweet_hash = 
+        #[{:date=>Sat, 10 Oct 2020, :tweet_count=>5}, 
+        #{:date=>Sun, 11 Oct 2020, :tweet_count=>5}, 
+        #{:date=>Mon, 12 Oct 2020, :tweet_count=>0}, 
+        #{:date=>Tue, 13 Oct 2020, :tweet_count=>1}, 
+        #{:date=>Wed, 14 Oct 2020, :tweet_count=>1}, 
+        #{:date=>Thu, 15 Oct 2020, :tweet_count=>0}]
+
+        # TODO: If all counts are greater than 0, then streak = length of array 
+        if user.tweet_hash == []
+            user.streak = 0
         
-        tweet_hash_array = user.tweet_hash
+            # Find the most recent date with no tweets (not today)
+            else
+            
+                no_tweets_date = user.tweet_hash.reverse.find do |tweet_hash|
+                    tweet_hash[:tweet_count] == 0 && tweet_hash[:date] != Date.today
+                end
 
-        # If all counts are greater than 0, then streak = length of array 
+                # If there were no tweets yesterday, set streak to 0
+                if no_tweets_date[:date] == Date.yesterday
+                    user.streak = 0 
+                end
+                #If there were no tweets yesterday, and one today, user streak is 1
+                #maybe make another start another if conditional here
+                if no_tweets_date[:date] == Date.yesterday && user.tweet_hash.last[:tweet_count] >= 1
+                    user.streak = 1
 
-        # Find the most recent date with no tweets (not today)
-        no_tweets_date = user.tweet_hash.reverse.find do |tweet_hash|
-            tweet_hash[:tweet_count] == 0 && tweet_hash[:date] != Date.today
+                # If today's count is 0, calculate total streak from yesterday
+                elsif user.tweet_hash.last[:tweet_count] == 0 
+                    temp_streak = Date.yesterday - no_tweets_date[:date]
+                    user.streak = temp_streak.to_s[0].to_i 
+
+                else
+                    # Else calculate streak from today
+                    temp_streak = Date.today - no_tweets_date[:date]
+                    user.streak = temp_streak.to_s[0].to_i 
+                end
         end
-        
-        # If there were no tweets yesterday, set streak to 0
-        if no_tweets_date[:date] == Date.yesterday
-            user.streak = 0 
-        #If there were no tweets yesterday, and one today, user streak is 1
-        #maybe make another start another if conditional here
-        elsif no_tweets_date[:date] == Date.yesterday && user.tweet_hash.last[:tweet_count] == 1
-            user.streak = 1
-        # If today's count is 0, calculate streak from yesterday
-        elsif user.tweet_hash.last[:tweet_count] == 0 
-            temp_streak = Date.yesterday - no_tweets_date[:date]
-            user.streak = temp_streak.to_s[0].to_i 
-        else
-            # Else calculate streak from today
-            temp_streak = Date.today - no_tweets_date[:date]
-            user.streak = temp_streak.to_s[0].to_i 
-        end
-
     end
 
     # Fetch tweet data for graph
@@ -130,6 +142,7 @@ class Api::V1::UsersController < ApplicationController
 
     def get_vocab_data
         user = User.find_by(id: params[:id])
+        
         vocab_data = user.vocab_hash
 
         render json: vocab_data
