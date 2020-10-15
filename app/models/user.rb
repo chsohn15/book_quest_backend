@@ -106,6 +106,7 @@ class User < ApplicationRecord
         return final_array 
     end
 
+    # Array of most recent vocab entries
     def last_vocab_array
         arr = []
         self.student_books.each do |student_book|
@@ -117,6 +118,7 @@ class User < ApplicationRecord
         return arr
     end
 
+    # Date of first vocab entry
     def first_vocab_date 
         arr = []
         self.student_books.each do |student_book|
@@ -128,6 +130,7 @@ class User < ApplicationRecord
         return Time.at(arr[0].created_at).to_date
     end
 
+    # Array of vocab dates
     def vocab_dates_array
         arr = (self.first_vocab_date..Date.today.to_date).map do |date|
             {date: date, vocab_count: 0}
@@ -135,6 +138,7 @@ class User < ApplicationRecord
         return arr
     end
 
+    # Array of hashes for vocabulary progress chart
     def vocab_hash
         # self.tweet_dates_array = [{:date=>Sat, 10 Oct 2020, :tweet_count=>0}, {:date=>Sun, 11 Oct 2020, :tweet_count=>0}]
         # self.all_tweets = array of tweet objects
@@ -149,6 +153,7 @@ class User < ApplicationRecord
         return final_array 
     end
 
+    # Array of user's vocab activities
     def vocab_activities 
         arr = []
         self.student_books.each do |student_book|
@@ -161,7 +166,7 @@ class User < ApplicationRecord
         return arr
     end
 
-    #Vocab activites with book object
+    #Vocab activites with book 
     def all_vocab
         arr = []
         self.student_books.each do |student_book|
