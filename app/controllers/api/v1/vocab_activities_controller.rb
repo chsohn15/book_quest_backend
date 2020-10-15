@@ -15,6 +15,6 @@ class Api::V1::VocabActivitiesController < ApplicationController
     private 
 
     def vocab_params_1
-        params.permit(:student_book_id, :word, :definition, :original_sentence, :sentence_from_book)
+        params.permit(:student_book_id, :word, :definition, :original_sentence, :sentence_from_book, :point_value)
     end
 end

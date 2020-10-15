@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       post '/change_character', to: "student_books#change_character"
       post '/handle_streak', to: "users#handle_streak"
       post '/get_tweet_data', to: "users#get_tweet_data"
-      post '/get_vocab', to: "users#get_vocab"
+      post '/get_vocab_data', to: "users#get_vocab_data"
       post '/get_all_tweets', to: "users#get_all_tweets"
     end 
   end

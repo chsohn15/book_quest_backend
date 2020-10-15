@@ -87,6 +87,7 @@ class Api::V1::UsersController < ApplicationController
 
         # If all counts are greater than 0, then streak = length of array 
 
+        # Find the most recent date with no tweets (not today)
         no_tweets_date = user.tweet_hash.reverse.find do |tweet_hash|
             tweet_hash[:tweet_count] == 0 && tweet_hash[:date] != Date.today
         end
@@ -124,6 +125,13 @@ class Api::V1::UsersController < ApplicationController
         all_tweets = user.all_tweets
 
         render json: all_tweets, include: [:character, :student_book => {include: [:book => {only: [:title]}]}]
+    end
+
+    def get_vocab_data
+        user = User.find_by(id: params[:id])
+        vocab_data = user.vocab_hash
+
+        render json: vocab_data
     end
 
     private 

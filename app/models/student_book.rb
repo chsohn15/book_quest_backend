@@ -21,6 +21,13 @@ class StudentBook < ApplicationRecord
         sum
     end
 
+    def total_vocab_points 
+        sum = self.vocab_activities.sum do |va| 
+                va.point_value 
+        end
+        sum
+    end
+
     def most_recent_tweet 
         self.reading_tweets.last
     end
@@ -31,6 +38,18 @@ class StudentBook < ApplicationRecord
 
     def first_tweet
         self.reading_tweets.first
+    end
+
+    def first_vocab
+        self.vocab_activities.first
+    end
+
+    def most_recent_vocab
+        self.vocab_activities.last
+    end
+
+    def second_most_recent_vocab
+        self.vocab_activities[-2]
     end
 
 
