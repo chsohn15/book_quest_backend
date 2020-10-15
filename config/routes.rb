@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       resources :characters
       resources :reading_tweets
       resources :vocab_activities
+      resources :reward_tiers
+      resources :rewards
 
       post '/login', to: "auth#create"
       post '/current_book', to: "student_books#currently_reading"
