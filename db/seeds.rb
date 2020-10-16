@@ -25,13 +25,21 @@ hc = Character.create(name: "Holden Caulfield", image_url: "https://hips.hearsta
 jg = Character.create(name: "Jane Gallagher", image_url: "https://pbs.twimg.com/profile_images/692706855701708800/dRWMlEyh_400x400.jpg")
 
 tier1 = RewardTier.create(level: 1)
+#Add rewards on post request
 body = Reward.create(redeemed: false, price: 25, description: "body")
 face = Reward.create(redeemed: false, price: 20, description: "face")
 
 tier2 = RewardTier.create(level: 2)
+
+#Add after post request and add to rewards tier
 buttons = Reward.create(redeemed: false, price: 15, description: "buttons")
 eyes = Reward.create(redeemed: false, price: 15, description: "eyes")
 nose = Reward.create(redeemed: false, price: 20, description: "nose")
 
 tier3 = RewardTier.create(level: 3)
+# Add rewards on post request
+scarf = Reward.create(redeemed: false, price: 15, description: "scarf")
+hat = Reward.create(redeemed: false, price: 15, description: "hat")
+
+tier4 = RewardTier.create(level: 4)
 
