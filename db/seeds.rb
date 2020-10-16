@@ -23,3 +23,15 @@ h8 = Character.create(name: "Henry VIII", image_url: "https://cdn.britannica.com
 hc = Character.create(name: "Holden Caulfield", image_url: "https://hips.hearstapps.com/esq.h-cdn.co/assets/15/39/1443043689-the-catcher-in-the-rye-by-mscorley-d3gop5m.jpg")
 
 jg = Character.create(name: "Jane Gallagher", image_url: "https://pbs.twimg.com/profile_images/692706855701708800/dRWMlEyh_400x400.jpg")
+
+tier1 = RewardTier.create(level: 1)
+body = Reward.create(redeemed: false, price: 25, description: "body")
+face = Reward.create(redeemed: false, price: 20, description: "face")
+
+tier2 = RewardTier.create(level: 2)
+buttons = Reward.create(redeemed: false, price: 15, description: "buttons")
+eyes = Reward.create(redeemed: false, price: 15, description: "eyes")
+nose = Reward.create(redeemed: false, price: 20, description: "nose")
+
+tier3 = RewardTier.create(level: 3)
+
