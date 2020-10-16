@@ -7,7 +7,8 @@ class User < ApplicationRecord
     has_many :student_books, foreign_key: "student_id"
     has_many :books, through: :student_books
 
-    has_many :reward_tiers, foreign_key: "student_id"
+    has_many :rewards, foreign_key: "student_id"
+    has_many :reward_tiers, through: :rewards
 
     has_secure_password
 

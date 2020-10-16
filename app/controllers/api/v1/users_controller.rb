@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
     
     def index 
         users = User.all 
-        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak], include: [:books, :student_books], methods: [:current_book, :total_points, :all_vocab]
+        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak], include: [:books, :student_books, :rewards], methods: [:current_book, :total_points, :all_vocab]
     end
 
     def show 
@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
 
         user.streak = self.load_streak(user.id)
         #byebug
-        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf, :all_vocab]
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak], include: [:books, :student_books, :rewards], methods: [:total_points, :current_book, :bookshelf, :all_vocab]
     end
 
     def create 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_15_163804) do
+ActiveRecord::Schema.define(version: 2020_10_16_182426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 2020_10_15_163804) do
 
   create_table "reward_tiers", force: :cascade do |t|
     t.integer "level"
-    t.integer "student_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -57,6 +56,7 @@ ActiveRecord::Schema.define(version: 2020_10_15_163804) do
     t.integer "reward_tier_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "student_id"
   end
 
   create_table "student_books", force: :cascade do |t|
