@@ -197,5 +197,19 @@ class User < ApplicationRecord
         return arr
     end
 
+    def current_tier 
+    end
+
+    def rewards_hash
+        rewards_hash = {}
+        self.rewards.each do |reward|
+            description = reward.description
+            if !rewards_hash[description]
+                rewards_hash[description] = true 
+            end 
+        end
+        return rewards_hash
+    end
+
 end
 
