@@ -13,7 +13,7 @@ class Api::V1::CharactersController < ApplicationController
     private 
 
     def character_params 
-        params.require(:character).permit(:name, :image_url)
+        params.require(:character).permit(:name, :image_url, :book_id)
     end
 
 end
