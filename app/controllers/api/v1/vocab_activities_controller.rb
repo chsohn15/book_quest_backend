@@ -12,6 +12,14 @@ class Api::V1::VocabActivitiesController < ApplicationController
         render json: all_vocab
     end
 
+    def destroy 
+        vocab_activity = VocabActivity.find_by(id: params[:id])
+
+        vocab_activity.destroy
+
+        render json: {message: "You've deleted this vocab card!"}
+    end
+
     private 
 
     def vocab_params_1
