@@ -211,5 +211,14 @@ class User < ApplicationRecord
         return rewards_hash
     end
 
+    def money_spent 
+        money_spent = self.rewards.sum { |reward| reward.price } 
+        return money_spent
+    end
+
+    def balance 
+        self.total_points - self.money_spent
+    end
+
 end
 
