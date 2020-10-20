@@ -31,6 +31,14 @@ class Api::V1::UsersController < ApplicationController
         end 
     end
 
+    def update 
+        user = User.find_by(id: params[:id])
+
+        user.update(image_url: params[:image_url])
+
+        render json: user
+    end
+
     def change_character
         user = User.find_by(id: params[:id])
 
