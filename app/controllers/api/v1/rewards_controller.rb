@@ -19,8 +19,12 @@ class Api::V1::RewardsController < ApplicationController
 
         description = params[:description]
 
+        price = params[:price]
+
         if user.rewards_hash[description]
             render json: {errors: "You've already redeemed this reward!"}
+        elsif price > user.balance
+            render json: {errors: "You need to earn more stars to redeem this reward!"}
         else
             reward = Reward.create(
                 price: params[:price], 
