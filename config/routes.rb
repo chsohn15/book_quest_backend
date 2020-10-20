@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       post '/get_tweet_data', to: "users#get_tweet_data"
       post '/get_vocab_data', to: "users#get_vocab_data"
       post '/get_all_tweets', to: "users#get_all_tweets"
+      post '/update_page', to: "student_books#update_page"
     end 
   end
 end

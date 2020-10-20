@@ -61,4 +61,11 @@ class Api::V1::StudentBooksController < ApplicationController
         render json: sb, include: [:vocab_activities, :reading_tweets =>{include: [:character]}, :book => {include: [:characters]}], methods: :twitter_character
     end
 
+    def update_page 
+        student_book = StudentBook.find_by(id: [params[:id]])
+
+        
+        byebug
+    end
+
 end
