@@ -20,8 +20,11 @@ class Api::V1::RewardsController < ApplicationController
         description = params[:description]
 
         price = params[:price]
-
-        if user.rewards_hash[description]
+        if reward_tier_id == 2 && user.tier_one_complete == false 
+            render json: {errors: "You need to redeem Level 1 rewards first!"}
+        elsif reward_tier_id == 3 && user.tier_two_complete == false 
+            render json: {errors: "You need to redeem Level 2 rewards first!"}
+        elsif user.rewards_hash[description]
             render json: {errors: "You've already redeemed this reward!"}
         elsif price > user.balance
             render json: {errors: "You need to earn more stars to redeem this reward!"}

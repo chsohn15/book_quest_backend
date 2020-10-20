@@ -137,7 +137,7 @@ class User < ApplicationRecord
                 arr << student_book.first_vocab
             end
         end
-        arr = self.last_vocab_array.sort { |a,b| a.created_at <=> b.created_at }
+        arr = arr.sort { |a,b| a.created_at <=> b.created_at }
         return Time.at(arr[0].created_at).to_date
     end
 
@@ -198,11 +198,19 @@ class User < ApplicationRecord
     end
 
     def tier_one_complete
-
+        if self.rewards_hash["body"] && self.rewards_hash["face"]
+            return true 
+        else 
+            return false
+        end
     end
 
     def tier_two_complete
-        
+        if self.rewards_hash["buttons"] && self.rewards_hash["arms"] && self.rewards_hash["nose"] && self.rewards_hash["eyes"]
+            return true 
+        else 
+            return false 
+        end
     end
 
     def rewards_hash
