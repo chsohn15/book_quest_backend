@@ -3,15 +3,16 @@ class Api::V1::UsersController < ApplicationController
     
     def index 
         users = User.all 
-        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :image_url], include: [:books, :student_books], methods: [:current_book, :total_points, :all_vocab, :rewards_hash, :money_spent, :balance]
+        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:current_book, :total_points, :all_vocab, :rewards_hash, :money_spent, :balance]
     end
 
     def show 
         user = User.find_by(id: params[:id])
 
         user.streak = self.load_streak(user.id)
+        user.vocab_streak = self.load_vocab_streak(user.id)
 
-        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :image_url], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf, :all_vocab, :rewards_hash, :money_spent, :balance]
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf, :all_vocab, :rewards_hash, :money_spent, :balance]
     end
 
     def create 
@@ -127,6 +128,50 @@ class Api::V1::UsersController < ApplicationController
                     # Else calculate streak from today
                     temp_streak = Date.today - no_tweets_date[:date]
                     user.streak = temp_streak.to_s[0].to_i 
+                end
+        end
+    end
+
+    def load_vocab_streak(id)
+        user = User.find(id)
+
+
+        # TODO: If all counts are greater than 0, then streak = length of array 
+        if user.vocab_hash == []
+            user.vocab_streak = 0
+            
+            # Find the most recent date with no tweets (not today)
+            else
+            
+                no_vocab_date = user.vocab_hash.reverse.find do |vocab_hash|
+                    vocab_hash[:vocab_count] == 0 && vocab_hash[:date] != Date.today
+                end
+
+                vocab_today_bool = user.vocab_hash.any? { |vocab_hash| vocab_hash[:date] == Date.today && vocab_hash[:vocab_count] > 0}
+
+                # If there are no previous tweet dates but they tweeted today, set streak to 1
+                if no_vocab_date == nil && vocab_today_bool 
+                    user.vocab_streak = 1 
+                    
+                # If there were no tweets yesterday, set streak to 0
+                elsif no_vocab_date[:date] == Date.yesterday
+                    user.vocab_streak = 0 
+
+                #If there were no tweets yesterday, and one today, user streak is 1
+                #maybe make another start another if conditional here
+                    if no_vocab_date[:date] == Date.yesterday && user.vocab_hash.last[:vocab_count] >= 1
+                    user.vocab_streak = 1
+                    end
+
+                # If today's count is 0, calculate total streak from yesterday
+                elsif user.vocab_hash.last[:vocab_count] == 0 
+                    temp_streak = Date.yesterday - no_vocab_date[:date]
+                    user.vocab_streak = temp_streak.to_s[0].to_i 
+
+                else
+                    # Else calculate streak from today
+                    temp_streak = Date.today - no_vocab_date[:date]
+                    user.vocab_streak = temp_streak.to_s[0].to_i 
                 end
         end
     end
