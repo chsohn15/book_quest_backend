@@ -197,7 +197,12 @@ class User < ApplicationRecord
         return arr
     end
 
-    def current_tier 
+    def tier_one_complete
+
+    end
+
+    def tier_two_complete
+        
     end
 
     def rewards_hash
