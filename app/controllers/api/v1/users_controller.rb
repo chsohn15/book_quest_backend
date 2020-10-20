@@ -94,7 +94,7 @@ class Api::V1::UsersController < ApplicationController
         # TODO: If all counts are greater than 0, then streak = length of array 
         if user.tweet_hash == []
             user.streak = 0
-        
+            
             # Find the most recent date with no tweets (not today)
             else
             
@@ -102,14 +102,21 @@ class Api::V1::UsersController < ApplicationController
                     tweet_hash[:tweet_count] == 0 && tweet_hash[:date] != Date.today
                 end
 
+                tweeted_today_bool = user.tweet_hash.any? { |tweet_hash| tweet_hash[:date] == Date.today && tweet_hash[:tweet_count] > 0}
+
+                # If there are no previous tweet dates but they tweeted today, set streak to 1
+                if no_tweets_date == nil && tweeted_today_bool 
+                    user.streak = 1 
+                    
                 # If there were no tweets yesterday, set streak to 0
-                if no_tweets_date[:date] == Date.yesterday
+                elsif no_tweets_date[:date] == Date.yesterday
                     user.streak = 0 
-                end
+
                 #If there were no tweets yesterday, and one today, user streak is 1
                 #maybe make another start another if conditional here
-                if no_tweets_date[:date] == Date.yesterday && user.tweet_hash.last[:tweet_count] >= 1
+                    if no_tweets_date[:date] == Date.yesterday && user.tweet_hash.last[:tweet_count] >= 1
                     user.streak = 1
+                    end
 
                 # If today's count is 0, calculate total streak from yesterday
                 elsif user.tweet_hash.last[:tweet_count] == 0 
