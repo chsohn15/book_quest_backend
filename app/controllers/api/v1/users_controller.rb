@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
 
         user.streak = self.load_streak(user.id)
         user.vocab_streak = self.load_vocab_streak(user.id)
-
+        
         render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf, :all_vocab, :rewards_hash, :money_spent, :balance]
     end
 
@@ -95,19 +95,21 @@ class Api::V1::UsersController < ApplicationController
         # TODO: If all counts are greater than 0, then streak = length of array 
         if user.tweet_hash == []
             user.streak = 0
-            
             # Find the most recent date with no tweets (not today)
-            else
+        else
+           
             
                 no_tweets_date = user.tweet_hash.reverse.find do |tweet_hash|
                     tweet_hash[:tweet_count] == 0 && tweet_hash[:date] != Date.today
                 end
 
                 tweeted_today_bool = user.tweet_hash.any? { |tweet_hash| tweet_hash[:date] == Date.today && tweet_hash[:tweet_count] > 0}
-
+                #byebug
                 # If there are no previous tweet dates but they tweeted today, set streak to 1
                 if no_tweets_date == nil && tweeted_today_bool 
                     user.streak = 1 
+                elsif no_tweets_date == nil && tweeted_today_bool == false
+                        user.streak = 0
                     
                 # If there were no tweets yesterday, set streak to 0
                 elsif no_tweets_date[:date] == Date.yesterday
@@ -153,6 +155,8 @@ class Api::V1::UsersController < ApplicationController
                 if no_vocab_date == nil && vocab_today_bool 
                     user.vocab_streak = 1 
                     
+                elsif no_vocab_date == nil && vocab_today_bool == false
+                    user.vocab_streak = 0
                 # If there were no tweets yesterday, set streak to 0
                 elsif no_vocab_date[:date] == Date.yesterday
                     user.vocab_streak = 0 
