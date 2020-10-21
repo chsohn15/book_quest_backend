@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
     
     def index 
         users = User.all 
-        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:current_book, :total_points, :all_vocab, :rewards_hash, :money_spent, :balance]
+        render json: users, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:current_book, :total_points, :all_vocab, :rewards_hash, :money_spent, :balance, :all_tweets]
     end
 
     def show 
@@ -12,7 +12,7 @@ class Api::V1::UsersController < ApplicationController
         user.streak = self.load_streak(user.id)
         user.vocab_streak = self.load_vocab_streak(user.id)
         
-        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf, :all_vocab, :rewards_hash, :money_spent, :balance]
+        render json: user, only: [:id, :first_name, :last_name, :username, :is_student, :character_id, :streak, :vocab_streak, :image_url], include: [:books, :student_books], methods: [:total_points, :current_book, :bookshelf, :all_vocab, :rewards_hash, :money_spent, :balance, :all_tweets]
     end
 
     def create 
