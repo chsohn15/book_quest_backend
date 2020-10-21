@@ -17,7 +17,9 @@ class Api::V1::UsersController < ApplicationController
 
     def create 
         user = User.new(user_params)
+
         if user.valid? 
+
             user.save 
             render json: {
                 id: user.id,
@@ -27,6 +29,7 @@ class Api::V1::UsersController < ApplicationController
                 username: user.username, 
                 token: encode_token({user_id: user.id})}, status: :created 
         else   
+
             render json: {error: "Failed to create user"}, status: :not_acceptable 
         end 
     end
@@ -103,6 +106,7 @@ class Api::V1::UsersController < ApplicationController
         # TODO: If all counts are greater than 0, then streak = length of array 
         if user.tweet_hash == []
             user.streak = 0
+            #byebug
             # Find the most recent date with no tweets (not today)
         else
            
@@ -112,13 +116,12 @@ class Api::V1::UsersController < ApplicationController
                 end
 
                 tweeted_today_bool = user.tweet_hash.any? { |tweet_hash| tweet_hash[:date] == Date.today && tweet_hash[:tweet_count] > 0}
-                #byebug
+                
                 # If there are no previous tweet dates but they tweeted today, set streak to 1
                 if no_tweets_date == nil && tweeted_today_bool 
-                    user.streak = 1 
+                    user.streak = user.tweet_hash.size
                 elsif no_tweets_date == nil && tweeted_today_bool == false
                         user.streak = 0
-                    
                 # If there were no tweets yesterday, set streak to 0
                 elsif no_tweets_date[:date] == Date.yesterday
                     user.streak = 0 
@@ -161,7 +164,7 @@ class Api::V1::UsersController < ApplicationController
 
                 # If there are no previous tweet dates but they tweeted today, set streak to 1
                 if no_vocab_date == nil && vocab_today_bool 
-                    user.vocab_streak = 1 
+                    user.streak = user.vocab_hash.size
                     
                 elsif no_vocab_date == nil && vocab_today_bool == false
                     user.vocab_streak = 0

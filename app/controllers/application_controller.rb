@@ -10,11 +10,12 @@ class ApplicationController < ActionController::API
         token = headers.split(" ")[1]
 
         begin user_id = JWT.decode(token, "copperfield")[0]["user_id"]
+
             user = User.find(user_id)
         rescue 
+
             user = nil 
         end 
-
         render json: {error: "Please login"} unless user
     end
 end
